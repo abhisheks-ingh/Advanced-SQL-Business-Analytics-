@@ -6,7 +6,7 @@ with forecast_err_table as (SELECT
     sum(ABS(forecast_quantity - sold_quantity)) AS abs_err,
    sum( ABS(forecast_quantity - sold_quantity)) * 100 / sum(forecast_quantity) AS abs_err_pct
 FROM
-    gdb0041.fact_act_est s
+    fact_act_est s
     where s.fiscal_year = in_fiscal_year
     group by customer_code )
 select

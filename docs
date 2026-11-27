@@ -1,1 +1,78 @@
+## Data Model and Logical Relationships
 
+This project follows a **multi-fact dimensional data model** designed to support business analysis across Finance Analytics, Customer & Product Analytics, and Supply Chain Analytics.
+
+The data model integrates sales, customer, product, pricing, discount, manufacturing, freight, and forecast information to generate meaningful business insights.
+
+The relationships described below represent **logical join relationships** used in SQL queries and analytical views. They are not necessarily database-enforced foreign key constraints.
+
+### 1. Database Tables and Their Roles
+
+| Table | Role | Grain / Key Used |
+|---|---|---|
+| `dim_customer` | Customer dimension | One row per `customer_code` (PK) |
+| `dim_product` | Product dimension | One row per `product_code` (PK) |
+| `fact_sales_monthly` | Monthly sales quantity | Composite PK: `product_code`, `date`, `customer_code` |
+| `fact_forecast_monthly` | Monthly sales forecast | `date`, `product_code`, `customer_code` (no declared PK) |
+| `fact_gross_price` | Product gross pricing | PK: `product_code`, `fiscal_year` |
+| `fact_manufacturing_cost` | Product manufacturing costs | PK: `product_code`, `cost_year` |
+| `fact_freight_cost` | Market-level freight and other costs | PK: `market`, `fiscal_year` |
+| `fact_pre_invoice_deductions` | Customer-level pre-invoice discounts | PK: `customer_code`, `fiscal_year` |
+| `fact_post_invoice_deductions` | Post-invoice discounts | PK: `customer_code`, `product_code`, `date` |
+
+### 2. Key Logical Join Relationships
+
+The following relationships connect the different business entities and fact tables:
+
+- **Customer Analysis:** `fact_sales_monthly.customer_code` → `dim_customer.customer_code`
+- **Product Analysis:** `fact_sales_monthly.product_code` → `dim_product.product_code`
+- **Sales & Pricing Analysis:** `fact_sales_monthly.(product_code, fiscal_year)` → `fact_gross_price.(product_code, fiscal_year)`
+- **Pre-Invoice Discount Analysis:** `fact_sales_monthly.(customer_code, fiscal_year)` → `fact_pre_invoice_deductions.(customer_code, fiscal_year)`
+- **Post-Invoice Discount Analysis:** `fact_sales_monthly.(customer_code, product_code, date)` → `fact_post_invoice_deductions.(customer_code, product_code, date)`
+- **Actual vs Forecast Analysis:** `fact_sales_monthly.(date, customer_code, product_code)` ↔ `fact_forecast_monthly.(date, customer_code, product_code)`
+- **Supply Chain Cost Analysis:** `fact_freight_cost` is analyzed using market and fiscal-year information.
+- **Manufacturing Cost Analysis:** `fact_manufacturing_cost` is connected to product information through `product_code` and analyzed by cost year.
+
+*Note:* The fiscal-year field in the sales fact was added during the analytical workflow. Earlier queries derive fiscal year from the date.
+
+### 3. Analytical Views and Derived Tables
+
+To simplify complex business calculations and maintain consistency across revenue analysis, the project uses the following SQL views:
+
+1. `sales_preinv_discount` – Calculates sales after applying pre-invoice discounts.
+2. `sales_postinv_discount` – Incorporates post-invoice deductions.
+3. `net_sales` – Calculates final net sales after applicable deductions.
+
+For sales forecast comparison, an additional `fact_act_est` table is generated during the analytical workflow to compare actual and estimated sales quantities.
+
+### 4. Entity Relationship Diagram (ERD)
+
+The following ER diagram illustrates the conceptual relationships between customer, product, sales, forecast, pricing, and cost tables.
+
+```mermaid
+erDiagram
+    dim_customer ||--o{ fact_sales_monthly : "customer_code"
+    dim_product ||--o{ fact_sales_monthly : "product_code"
+
+    dim_customer ||--o{ fact_forecast_monthly : "customer_code"
+    dim_product ||--o{ fact_forecast_monthly : "product_code"
+
+    dim_product ||--o{ fact_gross_price : "product_code"
+    dim_product ||--o{ fact_manufacturing_cost : "product_code"
+
+    dim_customer ||--o{ fact_pre_invoice_deductions : "customer_code"
+
+    dim_customer ||--o{ fact_post_invoice_deductions : "customer_code"
+    dim_product ||--o{ fact_post_invoice_deductions : "product_code"
+```
+
+### 5. Important Data Modeling Considerations
+
+- The project uses a multi-fact dimensional model to support different business analysis requirements.
+- Fact tables are connected using common business keys and composite join conditions.
+- Some relationships require matching multiple columns, such as product, customer, date, and fiscal year.
+- The freight cost table is organized by market and fiscal year rather than customer.
+- The forecast fact table does not have a declared primary key.
+- Analytical views are used to simplify complex revenue and discount calculations.
+
+**Overall, this data model provides the foundation for analyzing financial performance, customer behavior, product performance, sales trends, and supply chain costs using advanced SQL techniques.**

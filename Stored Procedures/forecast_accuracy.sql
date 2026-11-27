@@ -1,4 +1,6 @@
-
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_forecast_accuracy`(
+in_fiscal_year int)
+BEGIN
 with forecast_err_table as (SELECT 
     s.customer_code,
     sum((forecast_quantity - sold_quantity)) AS net_err,
@@ -6,7 +8,7 @@ with forecast_err_table as (SELECT
     sum(ABS(forecast_quantity - sold_quantity)) AS abs_err,
    sum( ABS(forecast_quantity - sold_quantity)) * 100 / sum(forecast_quantity) AS abs_err_pct
 FROM
-    fact_act_est s
+    gdb0041.fact_act_est s
     where s.fiscal_year = in_fiscal_year
     group by customer_code )
 select

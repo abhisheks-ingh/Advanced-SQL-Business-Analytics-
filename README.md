@@ -35,15 +35,16 @@ Together, these markets contributed **497.35 million** in net sales. This is app
 
 ### 2. The top three named customers accounted for around 31.5% of FY2021 net sales
 
-| Customer label | Net sales (millions) | Share |
-|---|---:|---:|
-| Amazon | 109.03 | 13.23% |
-| Atliq Exclusive | 79.92 | 9.70% |
-| Atliq e Store | 70.31 | 8.53% |
+| Customer label | Net sales (millions) |
+|---|---:|
+| Amazon | 39.94 |
+| Atliq Exclusive | 29.16 |
+| Atliq e Store | 18.74 |
 
 Their combined contribution was approximately **31.47%**. Rankings here group by *customer name*, so similarly named customers across markets are consolidated rather than reported individually by customer code.
 
-![Customer net sales contribution — MySQL Workbench](screenshots/customer_revenue_share.png)
+<img width="207" height="93" alt="image" src="https://github.com/user-attachments/assets/e7880afd-538f-41a9-b07e-8ec2a67d5b4a" />
+
 
 **Decision application:** investigate concentration among leading commercial partners and evaluate customer/account-level opportunities.
 

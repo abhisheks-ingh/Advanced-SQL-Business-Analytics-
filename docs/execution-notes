@@ -1,0 +1,32 @@
+# Execution notes and dependencies
+
+This repository intentionally preserves the **original SQL code exactly**. The individual query files are excerpts from a completed MySQL analysis, not a self-contained replacement for the database or a guaranteed executable series in a new database.
+
+| Query | Existing objects required |
+|---|---|
+| F1, F2, C1 | Base tables plus `get_fiscal_year()` |
+| C2, C3, C4 | `fact_sales_monthly.fiscal_year` and `sales_preinv_discount`, `sales_postinv_discount`, `net_sales` views |
+| C5 | `fact_sales_monthly.fiscal_year` |
+| S1 | `fact_act_est` helper table and fiscal year values |
+
+Original definitions available in the selected work are stored **unchanged** under [`sql/00_prerequisites/`](../sql/00_prerequisites/):
+
+1. `P1_fiscal_year_function.sql`
+2. `P2_pre_invoice_view.sql`
+3. `P3_post_invoice_view.sql`
+4. `P4_net_sales_view.sql`
+5. `P5_actual_vs_forecast_helper.sql`
+
+Some statements rely on an intermediate date-dimension table or a later-added `fiscal_year` column in the sales table that were introduced during the original working process. Their full setup code is not present in the supplied analysis scripts. The selected statements also retain their original statement terminators and `GROUP BY` choices; **run individual excerpts in an already prepared environment** rather than attempting to execute this folder in sequence as an installation script. No query logic has been modified.
+
+## Checks against exported results
+
+- F1 and C1: 3,006 matching sales rows and the same total gross sales amount.
+- F2: FY2021 monthly total matches the F1 gross sales total for nine observed months.
+- C2: Five market results ordered by FY2021 net sales.
+- C3: 74 named customer groups with percentage shares adding to approximately 100%.
+- C4: 103 regional customer groups; regional percentages add to approximately 100% each, after rounding.
+- C5: Nine products, three per division.
+- S1: 209 customer-code results with a project-specific, floor-at-zero forecast-accuracy metric.
+
+**Data availability:** Underlying database records and exported CSV results are intentionally excluded from public materials. Screenshots in the project are selected illustrations of the existing query results.

@@ -1,1 +1,41 @@
- 
+# Data model and logical joins
+
+The analysis uses a multi-fact dimensional model. The relationships listed below are **logical join relationships**, not database-enforced foreign keys.
+
+| Table | Role | Grain / key used |
+|---|---|---|
+| `dim_customer` | Customer dimension | One row per `customer_code` (PK) |
+| `dim_product` | Product dimension | One row per `product_code` (PK) |
+| `fact_sales_monthly` | Sales quantity fact | Composite PK: `product_code`, `date`, `customer_code` |
+| `fact_forecast_monthly` | Forecast quantity fact | Monthly `date`, `product_code`, `customer_code`; **no primary key declared** |
+| `fact_gross_price` | Gross price lookup/fact | PK: `product_code`, `fiscal_year` |
+| `fact_manufacturing_cost` | Manufacturing cost lookup/fact | PK: `product_code`, `cost_year` |
+| `fact_freight_cost` | Market freight/other cost lookup/fact | PK: `market`, `fiscal_year` |
+| `fact_pre_invoice_deductions` | Customer discounts | PK: `customer_code`, `fiscal_year` |
+| `fact_post_invoice_deductions` | Product/customer/date deductions | PK: `customer_code`, `product_code`, `date` |
+
+## Key join paths
+
+- `fact_sales_monthly.customer_code` → `dim_customer.customer_code`
+- `fact_sales_monthly.product_code` → `dim_product.product_code`
+- `fact_sales_monthly.(product_code, fiscal_year)` → `fact_gross_price.(product_code, fiscal_year)` — the sales fact's fiscal-year value was added during the workflow; earlier queries derive fiscal year from date.
+- `fact_sales_monthly.(customer_code, fiscal_year)` → `fact_pre_invoice_deductions.(customer_code, fiscal_year)`
+- `fact_sales_monthly.(customer_code, product_code, date)` → `fact_post_invoice_deductions.(customer_code, product_code, date)` (via derived reporting view)
+- `fact_sales_monthly.(date, customer_code, product_code)` ↔ `fact_forecast_monthly.(date, customer_code, product_code)` for actual-vs-forecast comparison.
+
+The sales forecast comparison uses an additional `fact_act_est` table generated in the analytical workflow, while revenue reporting uses three views: `sales_preinv_discount` → `sales_postinv_discount` → `net_sales`.
+
+```mermaid
+erDiagram
+    dim_customer ||--o{ fact_sales_monthly : "customer_code"
+    dim_product ||--o{ fact_sales_monthly : "product_code"
+    dim_customer ||--o{ fact_forecast_monthly : "customer_code"
+    dim_product ||--o{ fact_forecast_monthly : "product_code"
+    dim_product ||--o{ fact_gross_price : "product_code"
+    dim_product ||--o{ fact_manufacturing_cost : "product_code"
+    dim_customer ||--o{ fact_pre_invoice_deductions : "customer_code"
+    dim_customer ||--o{ fact_post_invoice_deductions : "customer_code"
+    dim_product ||--o{ fact_post_invoice_deductions : "product_code"
+```
+
+The diagram displays conceptual cardinality on shared codes only; other fact joins involve **composite keys** and fiscal-year/date conditions. No direct customer-key relationship is claimed for `fact_freight_cost`, which is organised by **market** and year. 

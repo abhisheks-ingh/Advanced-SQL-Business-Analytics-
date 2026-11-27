@@ -28,9 +28,7 @@ A MySQL business analytics case study exploring how an international consumer te
 
 Together, these markets contributed **497.35 million** in net sales. This is approximately **60.4%** of the **823.90 million** total derived from the customer-contribution report. These figures refer to the dataset's unspecified reporting currency; no currency symbol is assumed.
 
-<img width="223" height="128" alt="image" src="https://github.com/user-attachments/assets/2abfc59c-8499-4f5a-8673-07fdafe9c2db" />
-
-
+ 
 **Decision application:** prioritise market-level performance reviews and understand concentration in major sales territories.
 
 ### 2. The top three named customers accounted for around 31.5% of FY2021 net sales
@@ -42,8 +40,6 @@ Together, these markets contributed **497.35 million** in net sales. This is app
 | Atliq e Store | 18.74 |
 
 Their combined contribution was approximately **31.47%**. Rankings here group by *customer name*, so similarly named customers across markets are consolidated rather than reported individually by customer code.
-
-<img width="207" height="93" alt="image" src="https://github.com/user-attachments/assets/e7880afd-538f-41a9-b07e-8ec2a67d5b4a" />
 
 
 **Decision application:** investigate concentration among leading commercial partners and evaluate customer/account-level opportunities.
@@ -59,7 +55,6 @@ Their combined contribution was approximately **31.47%**. Rankings here group by
 
 Regional totals were reconstructed by summing the exported region/customer results. Minor differences versus total customer sales arise from rounding to two decimal places. Here **NA means North America**, not a missing value.
 
-![Customer contribution by region — MySQL Workbench](screenshots/regional_customer_share.png)
 
 **Decision application:** compare regional commercial reliance and prioritise local sales planning.
 
@@ -75,7 +70,6 @@ The FY2021 top unit-volume product in each division was:
 
 These are **unit-volume** rankings, not revenue or margin rankings. The query uses `DENSE_RANK()` to rank products within divisions.
 
-![Top products by division — MySQL Workbench](screenshots/top_products_by_division.png)
 
 **Decision application:** support product-line and category planning using observed unit demand.
 
@@ -85,7 +79,6 @@ The FY2021 forecast report covered **209 customer codes**. Under the specific SQ
 
 **Metric definition:** `forecast_accuracy = IF(abs_error_pct > 100, 0, 100 - abs_error_pct)`, where `abs_error_pct` divides the sum of absolute forecast errors by forecast quantity. This is the *project's defined measure*, not a claim that all organisations use the same accuracy definition.
 
-![Forecast accuracy — MySQL Workbench](screenshots/forecast_accuracy.png)
 
 **Decision application:** review forecast methodology for persistently high-error customer/market combinations, particularly before inventory allocation decisions.
 

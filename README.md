@@ -109,7 +109,7 @@ Supporting SQL definitions are organised under [`sql/00_prerequisites/`](sql/00_
 
 The original model contains **two dimension tables** (`dim_customer`, `dim_product`) and **seven fact tables** supporting sales, forecasts, gross prices, discounts and costs. Keys are linked logically in analytical joins; explicit foreign-key constraints are not defined in the provided database schema. A forecast-versus-actual helper table and net-sales reporting views are additional objects created during the analytical workflow.
 
-See [`docs/data_model.md`](docs/data_model.md) for the table overview and relationships.
+See [`docs/data_model.md`](docs/data-model.md) for the table overview and relationships.
 
 ## Tools
 

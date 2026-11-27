@@ -1,5 +1,0 @@
-# Data model and logical joins
-
-The analysis uses a multi-fact dimensional model. The relationships listed below are **logical join relationships**, not database-enforced foreign keys.
-
- 

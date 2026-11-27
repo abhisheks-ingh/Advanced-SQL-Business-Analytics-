@@ -103,7 +103,7 @@ Only **nine monthly periods** appear in the FY2021 extract, so missing periods s
 
 The project includes SQL queries covering **financial, commercial and supply chain analytics**, supported by reusable functions, views and intermediate tables.
 
-Supporting SQL definitions are organised under [`sql/00_prerequisites/`](sql/00_prerequisites/), with additional information on database dependencies and execution requirements available in [`docs/execution_notes.md`](docs/execution_notes.md).
+Information on database dependencies and execution requirements available in [`docs/execution_notes.md`](docs/execution-notes).
 
 ## Data model
 

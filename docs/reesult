@@ -1,0 +1,32 @@
+# Results review — supporting detail
+
+All figures are derived from the eight MySQL Workbench CSV result exports and are rounded where shown. The CSV exports are **not part of the public repository**.
+
+## Financial reporting
+
+- **F1:** 3,006 product-level rows for the selected customer during FY2021; 710,324 units; total gross sales **23,216,512.73**.
+- **C1:** The same 3,006 rows and gross-sales total; every selected row has a **0.3025** pre-invoice discount rate. Applying it gives approximately **16,193,517.63** before any post-invoice deduction; this derived amount is *not* the final net sales figure.
+- **F2:** 39 months in the complete customer extract from 2017-09 to 2021-12. For FY2021 (2020-09 to 2021-08), **nine** months are present and sum to **23,216,512.73**, matching F1. Missing months should not be described as zero sales without a data-coverage check.
+
+## Net sales and concentration
+
+- **C2:** The five leading FY2021 markets account for **497.35 million** in reported net sales.
+- **C3:** FY2021 total inferred from the customer grouping is about **823.90 million**. The five leading markets therefore account for **60.36%** of net sales. The three leading named customer labels account for **31.47%**, and the ten leading labels account for **49.68%**.
+- **C4:** Regional totals reconstructed from output (millions): APAC **442.00**, EU **200.82**, North America (`NA`) **177.94**, LATAM **3.16**. The regional sum differs from the customer-group sum by **0.02 million** due to row-level rounding.
+- **C5:** The top unit-volume products per division were Pen Drive DRC (N & S), Gamers Ms (P & A), and Digit (PC); this is not a financial ranking.
+
+## Forecast accuracy
+
+- **S1:** 209 customer-code results, median reported accuracy **41.59%**, mean **36.68%**, highest **47.23%**. Nine Netherlands customer codes have **0%** under the specified measure because their absolute error percentages exceeded 100%.
+- The query uses `IF(abs_error_pct > 100, 0, 100.0 - abs_error_pct)`. Reporting an average of this capped metric is **not equivalent** to calculating aggregate forecast accuracy from summed errors and forecasts.
+- Across this selected report, aggregate absolute errors total **30,126,438 units** and forecast quantities total **49,412,868 units**. An *uncapped* aggregate measure `100 × (1 − sum(abs_error) / sum(forecast_qty))` would be approximately **39.03%**. This figure is derived for context only; it is **not** an output from the original S1 query and should not replace its reported metric.
+- Negative net forecast error across all rows (approximately **−751,714 units**) indicates a small overall under-forecast in aggregate, but the much larger absolute error shows that opposing errors partially offset. Avoid interpreting net error alone as forecast quality.
+
+## Caveats that matter for interpretation
+
+1. Monetary currency is not declared in the supplied query results; use **millions** without a currency symbol.
+2. Customer contribution is grouped by name, which can combine records from multiple markets.
+3. `NA` is a valid region label for North America, not a missing value.
+4. Regional and customer totals are built from individually rounded results, producing slight differences.
+5. The dataset and query outputs establish observed results, not verified revenue forecasts, realised commercial improvements or external market facts.
+6. SQL files are preserved as written. Any changes for a newly provisioned database environment would be separate work, not edits presented as original queries.

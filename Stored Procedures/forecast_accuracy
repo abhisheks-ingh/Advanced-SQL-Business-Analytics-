@@ -1,6 +1,4 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_forecast_accuracy`(
-in_fiscal_year int)
-BEGIN
+
 with forecast_err_table as (SELECT 
     s.customer_code,
     sum((forecast_quantity - sold_quantity)) AS net_err,

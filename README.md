@@ -91,8 +91,8 @@ Only **nine monthly periods** appear in the FY2021 extract, so missing periods s
 ## SQL work included
 
 | File | Business question | SQL techniques |
-|---|---|---|
-| [F1 — Detailed gross sales](Stored Procedures/monthly_gross_sales_for_customer.sql) | What are the selected customer's product-level gross sales? | Multi-table joins, fiscal-year function, arithmetic |
+|---|---|---| 
+| [F1 — Detailed gross sales](Views/gross_sales.sql) | What are the selected customer's product-level gross sales? | Multi-table joins, fiscal-year function, arithmetic |
 | [F2 — Monthly gross sales](sql/01_financial/F2_monthly_gross_sales.sql) | How do gross sales vary month by month? | Joins, aggregation, `GROUP BY` |
 | [C1 — Pre-invoice discounts](sql/02_commercial/C1_pre_invoice_discounts.sql) | How are pre-invoice discounts associated with sales? | Multi-table joins, composite join conditions |
 | [C2 — Top markets](sql/02_commercial/C2_top_five_markets.sql) | Which markets lead FY2021 net sales? | Views, aggregation, sorting |

@@ -20,15 +20,16 @@ A MySQL business analytics case study exploring how an international consumer te
 
 | Market | FY2021 net sales (millions) |
 |---|---:|
-| India | 210.67 |
-| USA | 132.05 |
-| South Korea | 64.01 |
-| Canada | 45.89 |
-| United Kingdom | 44.73 |
+| India | 278.04 |
+| USA | 170.91 |
+| South Korea |84.53 |
+| Canada | 60.49 |
+| United Kingdom | 59.33 |
 
 Together, these markets contributed **497.35 million** in net sales. This is approximately **60.4%** of the **823.90 million** total derived from the customer-contribution report. These figures refer to the dataset's unspecified reporting currency; no currency symbol is assumed.
 
-![Top five markets — MySQL Workbench](screenshots/top_five_markets.png)
+<img width="223" height="128" alt="image" src="https://github.com/user-attachments/assets/2abfc59c-8499-4f5a-8673-07fdafe9c2db" />
+
 
 **Decision application:** prioritise market-level performance reviews and understand concentration in major sales territories.
 
